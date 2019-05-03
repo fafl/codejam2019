@@ -30,11 +30,11 @@ def solve(words):
 
 def main():
     t = int(input())
-    for tno in range(t):
+    for testcase_number in range(1, t + 1):
         n = int(input())
         words = [input() for _ in range(n)]
 
-        print('Case #{}: {}'.format(tno + 1, solve(words)))
+        print('Case #{}: {}'.format(testcase_number, solve(words)))
 
 
 if __name__ == '__main__':

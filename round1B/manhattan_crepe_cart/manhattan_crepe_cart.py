@@ -57,12 +57,12 @@ def solve(p, q, people):
 
 def main():
     t = int(input())
-    for tno in range(1, t + 1):
+    for testcase_number in range(1, t + 1):
         p, q = map(int, input().split())
         people = [input() for _ in range(p)]
         x, y = solve(p, q, people)
 
-        print('Case #{}: {} {}'.format(tno, x, y))
+        print('Case #{}: {} {}'.format(testcase_number, x, y))
 
 
 if __name__ == '__main__':

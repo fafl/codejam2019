@@ -81,7 +81,7 @@ def solve(board, last_x, last_y, level=0):
 
 def main():
     t = int(input())
-    for tno in range(t):
+    for testcase_number in range(1, t + 1):
 
         r, c = map(int, input().split())
         debug('will work on', r, c)
@@ -92,9 +92,9 @@ def main():
 
         solution = solve(board, -1, -2)
         if solution is None:
-            print('Case #{}: IMPOSSIBLE'.format(tno + 1))
+            print('Case #{}: IMPOSSIBLE'.format(testcase_number))
         else:
-            print('Case #{}: POSSIBLE'.format(tno + 1))
+            print('Case #{}: POSSIBLE'.format(testcase_number))
             for x, y in solution:
                 print(x + 1, y + 1)
 

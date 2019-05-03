@@ -8,9 +8,9 @@ def find_first(rests):
 
 
 def main():
-    T, N, M = map(int, input().split())
+    t, n, m = map(int, input().split())
 
-    for t in range(T):
+    for testcase_number in range(1, t + 1):
         rests = []
         for f in [17, 16, 13, 11, 9, 7, 5]:
             print(*[f for _ in range(18)], flush=True)
