@@ -55,9 +55,7 @@ def main():
     for testcase_number in range(1, t + 1):
 
         a = int(input())
-        bots = []
-        for i in range(a):
-            bots.append(input())
+        bots = [input() for _ in range(a)]
 
         solution = solve(bots)
         if solution is None:
