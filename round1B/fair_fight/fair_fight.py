@@ -87,76 +87,94 @@ def bin_search(a, predicate, leftmost=True, lo=0, hi=None):
 def solve(n, k, c, d):
     c_rmq = RMQ(c, max)
     d_rmq = RMQ(d, max)
-    result = 0
-    for i in range(n):
+
+    # Divide and Conquer with BFS:
+    # * First find the max element in C and find all intervals that include it
+    # * Then check the left and right side
+    queue = [(0, n)]
+    interval_count = 0
+    while queue:
+        lo, hi = queue.pop()
+
+        if hi <= lo:
+            continue
+
+        # Find index of max element in C
+        i = c_rmq.get_f_index(lo, hi)
+
+        # Add left and right sides to queue
+        queue.append((lo, i))
+        queue.append((i + 1, hi))
+
         # From the official analysis:
         # * p1 means: (best sword in C for given L and R) is at i
         # * p2 means: (best sword in D for given L and R) <= Ci + K
         # * p3 means: (best sword in D for given L and R) + K < Ci
+        # p1 is already fulfilled
 
-        # Find min L so that L <= i and p1 and p2
-        leftmost_p1_and_p2 = bin_search(
+        # Find leftmost index where p2 is still valid
+        leftmost_p2 = bin_search(
             c,
             lambda idx: (
-                c_rmq.get_f_index(idx, i + 1) == i and
                 d[d_rmq.get_f_index(idx, i + 1)] <= c[i] + k
             ),
             leftmost=True,
+            lo=lo,
             hi=i + 1
         )
-        if leftmost_p1_and_p2 is None:
+        if leftmost_p2 is None:
             continue
 
-        # Find max R so that i <= R and p1 and p2
-        rightmost_p1_and_p2 = bin_search(
+        # Find rightmost index where p2 is still valid
+        rightmost_p2 = bin_search(
             c,
             lambda idx: (
-                c_rmq.get_f_index(i, idx + 1) == i and
                 d[d_rmq.get_f_index(i, idx + 1)] <= c[i] + k
             ),
             leftmost=False,
-            lo=i
+            lo=i,
+            hi=hi
         )
-        if rightmost_p1_and_p2 is None:
+        if rightmost_p2 is None:
             continue
 
-        # Find min L so that L <= i and p1 and p3
-        leftmost_p1_and_p3 = bin_search(
+        # Find leftmost index where p3 is still valid
+        leftmost_p3 = bin_search(
             c,
             lambda idx: (
-                c_rmq.get_f_index(idx, i + 1) == i and
                 d[d_rmq.get_f_index(idx, i + 1)] + k < c[i]
             ),
             leftmost=True,
+            lo=lo,
             hi=i + 1
         )
 
-        # Find max R so that i <= R and p1 and p3
-        rightmost_p1_and_p3 = bin_search(
+        # Find rightmost index where p3 is still valid
+        rightmost_p3 = bin_search(
             c,
             lambda idx: (
-                c_rmq.get_f_index(i, idx + 1) == i and
                 d[d_rmq.get_f_index(i, idx + 1)] + k < c[i]
             ),
             leftmost=False,
-            lo=i
+            lo=i,
+            hi=hi
         )
 
-        # count intervals for p1 and p2
-        ranges_for_p1_and_p2 = (i - leftmost_p1_and_p2 + 1) * (rightmost_p1_and_p2 - i + 1)
-        result += ranges_for_p1_and_p2
+        # Count intervals for p1 and p2
+        interval_count += (i - leftmost_p2 + 1) * (rightmost_p2 - i + 1)
 
-        # count intervals for p1 and p3
-        if leftmost_p1_and_p3 is None or rightmost_p1_and_p3 is None:
-            ranges_for_p1_and_p3 = 0
-        else:
-            ranges_for_p1_and_p3 = (i - leftmost_p1_and_p3 + 1) * (rightmost_p1_and_p3 - i + 1)
-        result -= ranges_for_p1_and_p3
+        # Count intervals for p1 and p3
+        if leftmost_p3 is not None and rightmost_p3 is not None:
+            interval_count -= (i - leftmost_p3 + 1) * (rightmost_p3 - i + 1)
 
-    return result
+    return interval_count
 
 
 def main():
+
+    # Tests with random data
+    # TODO
+
     t = int(input())
     for testcase_number in range(1, t + 1):
         n, k = map(int, input().split())
