@@ -1,6 +1,8 @@
 ### Solutions in Python for the Code Jam 2019 problems
 
-https://codingcompetitions.withgoogle.com/codejam/archive/2019
+The contest can be found here: https://codingcompetitions.withgoogle.com/codejam/archive/2019
+
+The solutions in this repository are meant to be fast enough to solve both small and large dataset while still being readable. Feedback is very welcome.
 
 Current state of implementation:
 
@@ -20,4 +22,5 @@ Current state of implementation:
 * Round 1C
   * Robot Programming Strategy: ✔
   * Power Arrangers: ✔
-  * Bacterial Tactics: Missing
+  * Bacterial Tactics: ✔
+
